@@ -1,12 +1,13 @@
 name: Deploy to Cloudflare Pages
 
-# Deploys the static site to Cloudflare Pages on every push to main,
-# and creates a preview deployment for every pull request.
+# Deploys the static site to Cloudflare Pages on every push to `prod`
+# (the production branch), and a preview deployment for PRs targeting `prod`.
+# Branch model:  dev (work) → main (default/integration) → prod (deploys)
 on:
   push:
-    branches: [main]
+    branches: [prod]
   pull_request:
-    branches: [main]
+    branches: [prod]
   workflow_dispatch: {}
 
 permissions:

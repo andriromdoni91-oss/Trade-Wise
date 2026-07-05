@@ -35,15 +35,27 @@ Open `index.html` in a browser, or serve the folder:
 python3 -m http.server 8080   # then visit http://localhost:8080
 ```
 
+## Branch model
+
+| Branch | Purpose | CI/CD |
+|--------|---------|-------|
+| `dev`  | day-to-day work | none |
+| `main` | default / integration branch | none |
+| `prod` | production | **pushes here deploy to Cloudflare Pages** |
+
+Flow: work on `dev` → merge into `main` → merge `main` into `prod` to release.
+
 ## Deploy to Cloudflare Pages (CI/CD)
 
-Every push to `main` deploys to production; every pull request gets a preview URL.
+Every push to `prod` deploys to production; every pull request targeting `prod` gets a preview URL.
 
 ### One-time setup
 
 1. **Create the Pages project**
    - Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Create using direct upload** (or "Connect to Git").
    - Name it **`tradewise`** (must match `--project-name` in the workflow).
+   - After the first deploy, set the project's **production branch to `prod`**
+     (Pages → Settings → Builds & deployments) so Cloudflare treats `prod` deploys as production.
 
 2. **Create an API token**
    - Cloudflare dashboard → **My Profile** → **API Tokens** → **Create Token**.
@@ -59,7 +71,7 @@ Every push to `main` deploys to production; every pull request gets a preview UR
      - `CLOUDFLARE_API_TOKEN` = the token from step 2
      - `CLOUDFLARE_ACCOUNT_ID` = the ID from step 3
 
-5. **Push to `main`** — the workflow (`.github/workflows/deploy.yml`) runs and deploys.
+5. **Push to `prod`** — the workflow (`.github/workflows/deploy.yml`) runs and deploys.
    Your site goes live at `https://tradewise.pages.dev` (plus per-commit preview URLs).
 
 ### Custom domain (tradewise.co)
