@@ -322,6 +322,7 @@ header.nav.scrolled {
   border: 1px solid var(--border); color: var(--text); font-size: 0.95rem; outline: none; cursor: pointer; min-width: 180px;
 }
 .tst-select:focus { border-color: var(--emerald); }
+.tst-select option { background: var(--bg-2); color: var(--text); }
 .tst-count { text-align: center; color: var(--text-faint); font-size: 0.88rem; margin-bottom: 24px; }
 .tst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .tst-card {
