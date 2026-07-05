@@ -45,48 +45,34 @@ python3 -m http.server 8080   # then visit http://localhost:8080
 
 Flow: work on `dev` → merge into `main` → merge `main` into `prod` to release.
 
-## Deploy to Cloudflare Pages (CI/CD)
+## Deploy to Cloudflare Pages (Git integration)
 
-Every push to `prod` deploys to production; every pull request targeting `prod` gets a preview URL.
+Cloudflare watches the `prod` branch and auto-deploys on every push — no API tokens,
+no GitHub secrets, no build step.
 
 ### One-time setup
 
-1. **Create the Pages project**
-   - Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Create using direct upload** (or "Connect to Git").
-   - Name it **`tradewise`** (must match `--project-name` in the workflow).
-   - After the first deploy, set the project's **production branch to `prod`**
-     (Pages → Settings → Builds & deployments) so Cloudflare treats `prod` deploys as production.
-
-2. **Create an API token**
-   - Cloudflare dashboard → **My Profile** → **API Tokens** → **Create Token**.
-   - Use the **"Edit Cloudflare Workers"** template, or a custom token with:
-     - Permissions: **Account → Cloudflare Pages → Edit**
-   - Copy the token.
-
-3. **Get your Account ID**
-   - Workers & Pages → right sidebar → **Account ID** (or from any zone's Overview page).
-
-4. **Add GitHub secrets**
-   - GitHub repo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**:
-     - `CLOUDFLARE_API_TOKEN` = the token from step 2
-     - `CLOUDFLARE_ACCOUNT_ID` = the ID from step 3
-
-5. **Push to `prod`** — the workflow (`.github/workflows/deploy.yml`) runs and deploys.
-   Your site goes live at `https://tradewise.pages.dev` (plus per-commit preview URLs).
+1. **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+2. Authorize GitHub and select the **`Trade-Wise`** repo.
+3. **Set production branch:** `prod`.
+4. **Build settings:**
+   - Framework preset: **None**
+   - Build command: **(leave empty)**
+   - Build output directory: **`/`**
+5. Click **Save and Deploy**. Site goes live at `https://tradewise.pages.dev`.
+   Every later push to `prod` redeploys automatically; PRs get preview URLs.
 
 ### Custom domain (tradewise.co)
 
 Pages project → **Custom domains** → **Set up a domain** → enter `tradewise.co`.
 If the domain is on Cloudflare, DNS is configured automatically; otherwise add the shown CNAME.
 
----
+### Releasing
 
-### Alternative: no GitHub Actions (Git integration)
-
-If you'd rather not manage tokens, connect the repo directly:
-Workers & Pages → **Create** → **Pages** → **Connect to Git** → pick this repo →
-set **Build command:** *(empty)* and **Build output directory:** `/`. Cloudflare then
-auto-deploys on every push. In that case you can delete `.github/workflows/deploy.yml`.
+```bash
+git checkout prod && git merge main --ff-only && git push   # deploys
+git checkout main
+```
 
 ---
 
