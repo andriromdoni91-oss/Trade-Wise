@@ -5,19 +5,19 @@ A premium, responsive fintech landing page for **TradeWise**. Static site — no
 ## Structure
 
 ```
-├── index.html            # Landing page (hero, plans, features, stats, testimonials, FAQ, contact)
-├── privacy.html          # Privacy Policy      (placeholder)
-├── terms.html            # Terms & Conditions  (placeholder)
+├── index.html            # Landing page (hero, plans, features, stats, reviews, FAQ, contact)
+├── privacy.html          # Privacy Policy
+├── terms.html            # Terms & Conditions
 ├── disclaimer.html       # Risk Disclaimer
-├── refund.html           # Refund Policy       (placeholder)
+├── refund.html           # Refund Policy
 ├── assets/
 │   ├── styles.css        # All styles + design tokens (dark/light theme)
 │   ├── common.js         # Shared: theme toggle, sticky nav, mobile menu, Telegram links
-│   ├── main.js           # Homepage: plans, features, animated stats, FAQ, testimonials
+│   ├── main.js           # Homepage: plans, features, animated stats, FAQ, reviews
+│   ├── reviews.json      # Customer reviews (empty [] = reviews section hidden)
 │   └── tradewise-logo.jpg
 ├── _headers              # Cloudflare Pages caching + security headers
-├── .assetsignore         # Files excluded from the Pages upload
-└── .github/workflows/deploy.yml   # CI/CD → Cloudflare Pages
+└── (deploy) Cloudflare Pages Git integration on the `prod` branch
 ```
 
 ## Editing content
@@ -26,6 +26,27 @@ A premium, responsive fintech landing page for **TradeWise**. Static site — no
 - **Stats counters** → `assets/main.js`, the `stats` array.
 - **FAQ / features** → `assets/main.js`, the `faqs` / `features` arrays.
 - **Telegram link** → change `TG` in **both** `assets/common.js` and `assets/main.js` (currently `https://telegram.me/TradesWise`).
+
+### Adding real customer reviews
+
+The reviews section stays **hidden** while `assets/reviews.json` is empty (`[]`).
+Add genuine reviews as an array of objects and the section (with search, country
+filter and lazy-loading) appears automatically:
+
+```json
+[
+  {
+    "name": "Rahul Sharma",
+    "country": "India",
+    "flag": "🇮🇳",
+    "rating": 5,
+    "text": "Clear analysis and disciplined risk guidance — genuinely helpful.",
+    "date": "2026-06-18"
+  }
+]
+```
+
+Only add reviews from real customers — fabricated reviews are deceptive and illegal in many regions.
 
 ## Local preview
 
@@ -76,4 +97,4 @@ git checkout main
 
 ---
 
-**Disclaimer:** Educational content only — not financial advice. Legal pages are placeholders; have them reviewed before going live.
+**Disclaimer:** Educational content only — not financial advice. The legal pages are written as complete, usable documents; have them reviewed by a qualified professional for your jurisdiction before relying on them.
