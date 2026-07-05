@@ -1,0 +1,7 @@
+# Files that should NOT be uploaded to Cloudflare Pages
+.git
+.github
+.gitignore
+.assetsignore
+README.md
+node_modules
